@@ -1,0 +1,51 @@
+
+version: '3.7'
+
+networks:
+  network1:
+    name: minio-net
+    external: true
+
+x-minio-common: &minio-common
+  image: minio/minio
+  environment:
+    MINIO_ROOT_USER: admin
+    MINIO_ROOT_PASSWORD: cfps@infosky #大于等于8位
+    MINIO_VOLUMES: "/data"
+  restart: always
+  command: server /data --console-address ":9009"
+  logging:
+    options:
+      max-size: "50M" # 最大文件上传限制
+      max-file: "10"
+    driver: json-file
+  networks:
+    - network1
+  volumes:
+    - /opt/mydata/minio-data:/data
+    
+services:
+  minio1:
+    <<: *minio-common
+    hostname: minio1
+    container_name: minio1
+    ports:
+        - "9002:9000" # api 端口
+        - "9009:9009"
+  minio2:
+    <<: *minio-common
+    hostname: minio2
+    container_name: minio2
+    ports:
+        - "9003:9000" # api 端口
+        - "9010:9009"
+
+  minio3:
+    <<: *minio-common
+    hostname: minio3
+    container_name: minio3
+    ports:
+        - "9004:9000" # api 端口
+        - "9011:9009"
+  
+

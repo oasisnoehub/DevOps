@@ -1,0 +1,172 @@
+pipeline {
+    agent any
+
+    tools{
+        maven 'maven'
+    }
+
+    environment {
+        project_url = "http://172.22.70.12:9980/root/smartbup.git"
+        harbor_addr = "172.22.70.12:8888"
+        harbor_pro = "dev"
+        project_name = "smartbup"
+        tag = "v1.0.1"
+    }
+
+    stages {
+        stage('Pull Project') {
+            steps {
+                git branch: 'main', credentialsId: 'root-gitlab', url: 'http://172.22.70.12:9980/root/smartbup.git'
+                echo 'Pull: Success !'
+            }
+        }
+
+        stage('Prepare Maven') {
+            steps {
+                sh "mvn --version"
+                sh "mvn clean install -Dmaven.test.skip=true"
+            }
+        }
+
+        stage('Pack Image') {
+            steps {
+                sh '''
+                #!/bin/bash
+                echo "Start: Build image !"
+                docker build -t ${harbor_addr}/${harbor_pro}/${project_name}:${tag} . 
+                echo "Done: Build image !"
+                exit 0
+                '''
+            }
+        }
+
+ stage('Prepare Harbor Registry'){
+            steps {
+                
+                script{
+                    def remote = [:]
+                    remote.name = '172.22.70.12'
+                    remote.host = '172.22.70.12'
+                    remote.port = 22
+                    remote.allowAnyHosts = true
+                    //通过withCredentials调用Jenkins凭据中已保存的凭据，credentialsId需要填写，其他保持默认即可
+                    withCredentials([usernamePassword(credentialsId: 'root-172.22.70.12-up', passwordVariable: 'password', usernameVariable: 'userName')]) {
+                        remote.user = "${userName}"
+                        remote.password = "${password}"
+                    }
+                    sshCommand remote: remote, command: """   
+                        cd ~/harbor
+                        cat << EOF > remote_harbor.sh 
+                        #!/bin/bash
+                        if test ! -z "\$(docker service ls | grep harbor)";then
+                            echo "Harbor already ready!"
+                        else
+                            echo "Start Harbor..."
+                            ./install.sh --with-trivy --with-chartmuseum
+                        fi
+                        EOF
+                        sh remote_harbor.sh
+                    """
+                }
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh '''
+                #!/bin/bash
+                docker login ${harbor_addr} -u admin -p Harbor12345
+                docker push ${harbor_addr}/${harbor_pro}/${project_name}:${tag}
+                docker logout ${harbor_addr}
+                exit 0
+                '''
+
+            }
+        }
+
+        stage('Remote Pull Image'){
+            steps {
+                 script{
+                    def remote = [:]
+                    remote.name = '172.22.70.15'
+                    remote.host = '172.22.70.15'
+                    remote.port = 22
+                    remote.allowAnyHosts = true
+                    //通过withCredentials调用Jenkins凭据中已保存的凭据，credentialsId需要填写，其他保持默认即可
+                    withCredentials([usernamePassword(credentialsId: 'root-172.22.70.15-up', passwordVariable: 'password', usernameVariable: 'userName')]) {
+                        remote.user = "${userName}"
+                        remote.password = "${password}"
+                    }
+                    sshCommand remote: remote, command: "docker pull ${harbor_addr}/${harbor_pro}/${project_name}:${tag}"
+                }
+                                 script{
+                    def remote = [:]
+                    remote.name = '172.22.70.18'
+                    remote.host = '172.22.70.18'
+                    remote.port = 22
+                    remote.allowAnyHosts = true
+                    //通过withCredentials调用Jenkins凭据中已保存的凭据，credentialsId需要填写，其他保持默认即可
+                    withCredentials([usernamePassword(credentialsId: 'root-172.22.70.18-up', passwordVariable: 'password', usernameVariable: 'userName')]) {
+                        remote.user = "${userName}"
+                        remote.password = "${password}"
+                    }
+                    sshCommand remote: remote, command: "docker pull ${harbor_addr}/${harbor_pro}/${project_name}:${tag}"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                #!/bin/bash
+                docker login ${harbor_addr} -u admin -p Harbor12345
+                docker pull ${harbor_addr}/${harbor_pro}/${project_name}:${tag}
+                # 检查是否已经有同名的mysmartbup服务
+                if test ! -z "$(docker service ls | grep -w ${project_name})";then
+                    echo "Already has < ${project_name} > service"
+                    docker service rm ${project_name}
+                    echo "Removed original < ${project_name} > service"
+                else
+                    echo "No < ${project_name} > service"
+                fi
+                # 检查是否已经有同名的docker网络
+                if test ! -z "$(docker network ls | grep -w ${project_name}-net)";then
+                    echo "Already has < ${project_name}-net > network"
+                    # docker network rm ${project_name}-net
+                    # 创建docker swarm 服务网络
+                    # echo "Removed original < ${project_name}-net > network"
+                    # docker network create -d overlay ${project_name}-net
+                    # echo "Created New< ${project_name}-net > network"
+                else
+                    echo "No < ${project_name}-net > network"
+                    docker network create -d overlay ${project_name}-net
+                    echo "Created New< ${project_name}-net > network"
+                fi
+
+                # 创建 docker swarm 服务
+                echo "Start create < mysmartbup > service"
+                docker service create --name ${project_name} --network ${project_name}-net -p 7011:7011 --replicas 3 ${harbor_addr}/${harbor_pro}/${project_name}:${tag}
+                docker service ls
+                echo "Done."
+                # 退出docker登录
+                docker logout ${harbor_addr}
+                exit 0
+                '''
+            }
+        }
+
+         stage('Scale') {
+            steps {
+                sh '''
+                #!/bin/bash
+                docker service ls
+                # scale service to 6
+                docker service scale ${project_name}=6
+                docker service ls
+                exit 0
+                '''
+            }
+        }
+
+    }
+}
