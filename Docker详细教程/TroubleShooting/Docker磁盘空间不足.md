@@ -17,6 +17,13 @@ https://www.cnblogs.com/llfctt/p/13408857.html
 ```shell
 df -h
 ```
+删除无用镜像
+```shell
+# WARNING! 
+# This will remove all images without at least one container associated to them.
+docker image prune -a
+```
+
 选择磁盘容量大的空间，且在上面创建新的docker目录
 ```shell
 mkdir -p /docker/lib
