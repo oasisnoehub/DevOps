@@ -98,3 +98,60 @@ exit
 ```
 
 ![Alt text](image.png)
+
+
+# 创建gitlab集群
+
+创建gitlab集群网络
+```shell
+docker network create --scope=swarm --attachable -d overlay gitlab-net
+```
+
+使用portainer stack （docker compose yml文件进行编排）部署
+```yml
+version: '3.6'
+
+networks:
+  network1:
+    name: gitlab-net
+    external: true
+
+
+x-gitlab-common: &gitlab-common
+  image: 'gitlab/gitlab-ce:latest'
+  environment:
+    TZ: 'Asia/Shanghai'
+  restart: always
+  privileged: true
+  networks:
+    - network1
+  volumes:
+      - /opt/mydata/gitlab/config:/etc/gitlab
+      - /opt/mydata/gitlab/logs:/var/log/gitlab
+      - /opt/mydata/gitlab/data:/var/opt/gitlab
+  shm_size: '256m'
+
+services:
+  gitlab1:
+    <<: *gitlab-common
+    hostname: gitlab1
+    container_name: gitlab1
+    ports:
+        - '9980:80'
+        - '9922:22'
+  gitlab2:
+    <<: *gitlab-common
+    hostname: gitlab2
+    container_name: gitlab2
+    ports:
+        - '9981:80'
+        - '9932:22'
+  gitlab3:
+    <<: *gitlab-common
+    hostname: gitlab3
+    container_name: gitlab3
+    ports:
+        - '9982:80'
+        - '9942:22'
+
+```
