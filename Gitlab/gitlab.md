@@ -97,17 +97,19 @@ exit
 exit
 ```
 
-![Alt text](image.png)
+![Alt text](images/image.png)
 
 
 # 创建gitlab集群
 
+创建gitlab集群volume存储地址：
+sh gitlab-volume-creator.sh
+
 创建gitlab集群网络
 ```shell
-docker network create --scope=swarm --attachable -d overlay gitlab-net
+docker network create --scope=swarm --attachable -d overlay gitlab-network
 ```
-
-使用portainer stack （docker compose yml文件进行编排）部署
+将`gitlab.rb`，`root_password.txt` 以及 `git-stack.yml` 放在同一路径下，使用portainer stack （docker compose yml文件进行编排）部署
 ```shell
 docker stack deploy -c gitlab-stack.yml gitlab
 ```
