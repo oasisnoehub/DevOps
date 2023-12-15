@@ -54,11 +54,11 @@ docker image prune -a
 
 选择磁盘容量大的空间，且在上面创建新的docker目录
 ```shell
-mkdir -p /docker/lib
+mkdir -p /mydata/docker/lib
 ```
 迁移/var/lib/docker目录下的文件到新创建的目录/docker/lib
 ```shell
-rsync -avzP /var/lib/docker /docker/lib
+rsync -avzP /var/lib/docker /mydata/docker/lib
 ```
 删掉docker旧目录 `/var/lib/docker`
 ```shell
@@ -67,11 +67,19 @@ rm -rf /var/lib/docker
 
 添加软连接将`/var/lib/`指向`/var/lib/`
 ```shell
-ln -s /docker/lib/docker /var/lib/
+ln -s /mydata/docker/lib /var/lib
 ```
 
 编辑 /etc/docker/daemon.json 
-```shell
+```json
+{
+  "insecure-registries": ["http://172.22.70.12:8888"],
+  "data-root": "/docker/lib/docker"
+}
+
+```
+添加
+```json
 {
   "data-root":"/docker/lib/docker"
 }

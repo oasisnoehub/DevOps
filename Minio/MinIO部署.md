@@ -7,14 +7,14 @@ MinIO 是一个高性能的对象存储服务器，用于构建云存储解决�
 MinIO 允许以对象的形式存储非结构化数据（如图片、视频、日志文件等）。与传统的文件系统（如NFS）或块存储（如iSCSI）相比，对象存储更易于扩展和管理。MinIO 提供简单的部署选项和易于使用的界面，允许你快速设置和访问存储资源。
 
 Amazon Simple Storage Service (Amazon S3) 是一种对象存储服务
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 ## Minio集群部署
 ### 部署架构
 
 建议生产采用至少4节点(服务器),每节点2块磁盘的集群部署,磁盘越大越好了。
 部署模式采用nginx【1+】+minIO分布式部署[4+]
 
-![Alt text](image.png)
+![Alt text](images/image.png)
 
 ### 部署方式
 分布式MinIO
@@ -105,7 +105,7 @@ http://172.22.70.15:9009/login
 http://172.22.70.18:9009/login
 ```
 
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 
 ## 管理MinIO部署
 

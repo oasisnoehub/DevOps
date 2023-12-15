@@ -1,107 +1,80 @@
 # Portainer
 
-参考文档：https://www.cnblogs.com/netcore3/p/16978867.html
+## 使用DockerSwarm部署Portainer CE（Linux）
+https://docs.portainer.io/start/install-ce/server/swarm/linux
 
-### 安装
 
->一、官网
->
->https://www.portainer.io/
->
->https://docs.portainer.io/v/ce-2.9/start/install/server/docker/linux
->
->二、步骤
->
->1. docker命令安装
->
->```shell
->
->  docker run -d -p 8000:8000 -p 9000:9000 --name myportainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/portainer/data:/data portainer/portainer
->```
->
->2. 第一次登录需创建admin，访问地址：xxx.xxx.xxx.xxx:9000
->
->```shell
->用户名，直接用默认admin 
->密码记得8位，随便你写 
->```
->
->3. 设置admin用户和密码后首次登陆
->4. 选择local选项卡后本地docker详细信息展示
->5. 上一步的图形展示，能想得起对应命令吗？
->6. 登陆并演示介绍常用操作case
-
-# 创建portainer 环境
-https://docs.portainer.io/admin/environments/add/swarm
-
-## Install Portainer Agent on Docker Swarm
-`Portainer uses the Portainer Agent container to communicate with the Portainer Server instance and provide access to the node's resources. `
-
-- The manager and worker nodes must be able to communicate with each other over `port 9001`. In addition, the Portainer Server installation must be able to `reach the nodes on port 9001`. If this is not possible, we advise looking at the Edge Agent instead.
-
-If Docker on the environment you're deploying the Agent to has the Docker volume path at a non-standard location (instead of /var/lib/docker/volumes) you will need to adjust the volume mount in the deployment command to suit. 
-For example, if your volume path was /srv/data/docker, you would change the line in the command to:
+创建minio集群网络
 ```shell
---mount type=bind,src=//srv/data/docker,dst=/var/lib/docker/volumes \
+docker network create --scope=swarm --attachable -d overlay portainer-agent-network
 ```
-The dst value of the mount should remain as `/var/lib/docker/volumes`, as that is what the Agent expects.
 
-**创建portainer agent network**
+下载portainer stack yml文件
 ```shell
-docker network create \ 
---driver overlay \ 
---attachable \ 
-protainer_agent_network
+curl -L https://downloads.portainer.io/ce2-19/portainer-agent-stack.yml -o portainer-agent-stack.yml
 ```
-**创建portainer agent**
+`注意添加portainer agent 的端口号映射： 9001`
+
+使用docker stack 和 portainer-agent-stack.yml 文件部署 （按需修改yml文件:）
+`注意1：文件数据卷的映射`
+`注意2：确保所有节点都有需要创建的镜像存在（目前不知道为什么使用stack部署时必须已经存在镜像才能创建成功，无法自动拉取镜像创建服务）`
 ```shell
-docker service create \
-    --name portainer_agent \
-    --network portainer_agent_network \
-    -p 9001:9001/tcp \
-    --mode global \
-    --constraint 'node.platform.os == linux' \
-    --mount type=bind,src=//var/run/docker.sock,dst=/var/run/docker.sock \
-    --mount type=bind,src=//var/lib/docker/volumes,dst=/var/lib/docker/volumes \
-    portainer/agent
+docker stack deploy -c portainer-agent-stack.yml portainer
 ```
 
 
-# Portainer agent 管理 swarm 集群
+登入Portainer管理UI，添加Agent作为Swarm集群的统一EndPoint：
+![Alt text](images/image.png)
 
-https://zhuanlan.zhihu.com/p/575371623
 
-## 安装Portainer
-**选择一个manager节点，安装portainer:**
-创建portainer网络
-```shell
-docker network create \
- --driver overlay \
- --attachable \
- --subnet 10.12.0.0/24 \
- portainer_agent_network
+![Alt text](images/image1.png)
+
+
+## 汉化版 Portainer 安装
+使用汉化版的portainer镜像 `6053537/portainer-ce`
+使用docker stack 与 `portainer-agent-stack.yml`文件 部署 portainer 集群：
+```yml
+version: '3.6'
+
+networks:
+  network1:
+    name: portainer-agent-network
+    external: true
+  
+services:
+  agent:
+      image: portainer/agent:2.19.4
+      ports:
+        - "9001:9001"
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /mydata/docker/lib/volumes:/var/lib/docker/volumes
+      networks:
+        - network1
+      
+      deploy:
+        mode: global
+        placement:
+          constraints: [node.platform.os == linux]
+
+  portainer:
+    image: 6053537/portainer-ce
+    environment:
+      - DMIN_USERNAME:"admin"
+      - ADMIN_PASS:"1234567891011"
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - /mydata/portainer/data:/data
+      # - /mydata/portainer/public:/public
+    networks:
+      - network1
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 ```
-创建portainer
-```shell
-docker run -d -p 9000:9000 --name portainer \
- --network portainer_agent_net \
- --restart always \
- -v /var/run/docker.sock:/var/run/docker.sock \
- -v /docker/data/portainer:/data portainer/portainer
-```
-
-**在swarm集群上创建portainer_agent服务:**
-```shell
-docker service create \
-    --name portainer_agent \
-    --network portainer_agent_network \
-    --mode global \
-    --constraint 'node.platform.os == linux' \
-    --mount type=bind,src=//var/run/docker.sock,dst=/var/run/docker.sock \
-    --mount type=bind,src=//var/lib/docker/volumes,dst=/var/lib/docker/volumes \
-    portainer/agent
-```
-**登入Portainer管理UI，添加Agent作为Swarm集群的统一EndPoint：**
-
-
-

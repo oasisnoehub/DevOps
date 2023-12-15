@@ -24,21 +24,21 @@ wget https://ghproxy.com/https://github.com/goharbor/harbor/releases/download/v2
  # 移动到 ~/harbor
  mv harbor ~/harbor
 ```
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 
 修改harbor.yml配置文件
 ```shell
 cd harbor
 mv harbor.yml.tmpl harbor.yml
 ```
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 
 ```shell
 vi harbor.yml
 ```
 修改主机地址，端口以及将https配置注释掉
 
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 
 启动 harbor
 ```shell
@@ -60,7 +60,7 @@ vi harbor.yml
 启动完成
 登录：http://172.22.70.12:8888/
 
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
 
 初始用户登录账号密码
 ```
@@ -70,11 +70,11 @@ password : Harbor12345
 
 开启了镜像安全扫描器的启动，可在项目中看到trivy镜像扫描器
 
-![Alt text](image-7.png)
+![Alt text](images/image-7.png)
 
 可对镜像安全扫描进行配置
 
-![Alt text](image-8.png)
+![Alt text](images/image-8.png)
 
 
 ## 镜像推送
@@ -91,29 +91,29 @@ docker login 172.22.70.12:8888
 # 推送镜像到harbor仓库
 docker push 172.22.70.12:8888/library/nginx:1.19
 ```
-![Alt text](image-5.png)
+![Alt text](images/image-5.png)
 
 自动对pushed的镜像进行漏洞扫描
 - 前提：开启镜像安全扫描器
 
-![Alt text](image-9.png)
+![Alt text](images/image-9.png)
 
 ## 仓库复制
 
 仓库管理 -> 添加目标 -> 目标仓库地址（ip + port）-> 访问ID（可用机器人账号访问/目标仓库指定用户账号）
 
-![Alt text](image-21.png)
+![Alt text](images/image-21.png)
 
 复制管理界面->添加镜像复制规则 -> 资源过滤（dev/** : 项目dev下的所有资源） -> 目标仓库选择仓库管理配置的目标 -> 目标 （需要复制到目标仓库的项目名空间）-> 触发模式（什么机制下触发复制事件）
 
-![Alt text](image-20.png)
+![Alt text](images/image-20.png)
 
 
 ## 镜像签名(cosign)
 ### 签名过程
 https://blog.gitguardian.com/supply-chain-security-sigstore-and-cosign-part-ii/#:~:text=Using%20Cosign%201%203.1%20Install%20The%20easiest%20way,this%3A%20...%203%203.3%20Signature%20and%20Verification%20
 
-![Alt text](image-13.png)
+![Alt text](images/image-13.png)
 
 ### Cosign
 
@@ -150,7 +150,7 @@ $ cosign generate-key-pair
 >>> Private key written to cosign.key
 >>> Public key written to cosign.pub
 ```
-![Alt text](image-22.png)
+![Alt text](images/image-22.png)
 
 以项目授权用户登录，并push打好标签的镜像，使用cosign进行镜像签名，sign的密码为之前生成cosign.key输入的密码
 
@@ -166,7 +166,7 @@ $ docker login <ip>:<port>
 ```
 可见镜像添加了signature.cosign签名附件
 
-![Alt text](image-14.png)
+![Alt text](images/image-14.png)
 
 #### Cosign签名验证
 验证签名镜像
@@ -176,7 +176,7 @@ $ docker login <ip>:<port>
  yum -y install jq 
 ```
 验证结果
-![Alt text](image-15.png)
+![Alt text](images/image-15.png)
 
 
 ## 镜像制品保留策略
@@ -194,9 +194,9 @@ Artifact保留策略的设置是以项目为单位的，并且以 Tag 作为 Art
 
 `仓库项目 -> 策略 -> 添加规则（tag保留）-> 立即执行 / 定时执行`
 
-![Alt text](image-16.png)
+![Alt text](images/image-16.png)
 
-![Alt text](image-17.png)
+![Alt text](images/image-17.png)
 
 
 
