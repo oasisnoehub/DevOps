@@ -69,6 +69,21 @@ docker service create \
 `注意：删除container的时候，相关挂载的volume不会自动连带删除，需要自己手动删除。`
 注意：`docker service create` 挂载volume的时候只能使用 `--mount` 命令
 
+**（2）使用 tmpfs 创建服务**
+
+使用`--tmpfs`命令采用tmpfs内存挂载，或者使用`--mount type=tmpfs`的方式进行挂载，推荐使用更稳健的`--mount`命令
+```shell
+# mount参数方式
+ docker run -d -it --name tmptest --mount type=tmpfs,destination=/app nginx:latest
+# tmpfs参数方式
+ docker run -d -it --name tmptest --tmpfs /app nginx:latest
+```
+
+`--tmpfs`: 无配置选项, 只能用于standalone的containers.
+`--mount type=tmpfs,destination=/app`
+
+
+
 ## 数据共享
 
 ![Alt text](assets/DockerStorage/image-1.png)
