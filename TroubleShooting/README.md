@@ -1,22 +1,22 @@
 # Centos 7 安装 Docker 步骤（流畅安装版）
 https://cloud.tencent.com/developer/article/1701451
 
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 
 这里非常重要一定要先运行这个更新命令（*不然后面安装出错改到你想哭）
 ```shell
     yum -y update
 ```
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
+docker
+![Alt text](images/image-5.png)
 
-![Alt text](image-5.png)
-
-![Alt text](image-6.png)
+![Alt text](images/image-6.png)
 
 出现一下则安装成功：
-![Alt text](image-7.png)
+![Alt text](images/image-7.png)
 
-![Alt text](image-8.png)
+![Alt text](images/image-8.png)
 
 # 开启docker 开启自动启动
 ```shell
@@ -39,7 +39,7 @@ chmod +x /usr/local/bin/docker-compose
 
 
 # Push 本地Docker镜像到阿里云镜像仓库上
-![Alt text](image-9.png)
+![Alt text](images/image-9.png)
 
 # 1. Hardware assisted virtualization and data execution protection must be enabled in the BIO 
 
@@ -74,8 +74,8 @@ Restart Windows.
 
 # 2. VirtualBox不能为虚拟电脑打开一个新任务
 使用docker需要上述配置，而virtualbox的镜像任务启动不能hyper-v， 需要在启用或者关闭Windos功能中将Hyper-v关闭
-![Alt text](image.png)
-![Alt text](image-1.png)
+![Alt text](images/image.png)
+![Alt text](images/image-1.png)
 然后在管理员cmd下运行命令：
 ```shell
     bcdedit /set hypervisorlaunchtype off 
@@ -86,7 +86,7 @@ Restart Windows.
 https://blog.csdn.net/weixin_45848781/article/details/121312926
 
 设置virtualbox copy与paste的问题：
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 
 
 # 4. 打开或者关闭防火墙(换镜像+更新操作都把防火墙关了)
@@ -148,7 +148,7 @@ chkconfig iptables on　 # 永久关闭后重启
 
 通过执行这些步骤，你应该能够解决VirtualBox中CentOS虚拟机与主机之间的复制粘贴问题。如果问题仍然存在，确保你使用的是最新版本的VirtualBox和CentOS，并检查VirtualBox和Guest Additions的日志文件以获取更多信息。
 
-尹:
+
 要更新CentOS和VirtualBox，你可以按照以下步骤进行：
 
 ### 更新CentOS：
@@ -202,9 +202,9 @@ https://developer.aliyun.com/article/786782
 # 7. 在Virtualbox安装Centos7配置SSH远程连接
 https://blog.csdn.net/ls909074489/article/details/128813331?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-128813331-blog-108906642.235%5Ev38%5Epc_relevant_sort_base1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-128813331-blog-108906642.235%5Ev38%5Epc_relevant_sort_base1&utm_relevant_index=2
 
-![Alt text](image-10.png)
-![Alt text](image-11.png)
-![Alt text](image-12.png)
+![Alt text](images/image-10.png)
+![Alt text](images/image-11.png)
+![Alt text](images/image-12.png)
 
 
 
@@ -232,11 +232,11 @@ https://blog.csdn.net/zhengzaifeidelushang/article/details/110781033
 
 注释掉harbor.yml中https的配置
 
-![Alt text](image-14.png)
+![Alt text](images/image-14.png)
 
 # 11. 删除玄虚镜像(image tag 为none的镜像)
 
-![Alt text](image-15.png)
+![Alt text](images/image-15.png)
 执行下面命令：
 
 ```shell
@@ -245,7 +245,7 @@ docker image prune
 
 ## Corn String
 https://zhuanlan.zhihu.com/p/437328366
-![Alt text](image-16.png)
+![Alt text](images/image-16.png)
 
 
 ## linux中docker报错：ERROR: Got permission denied while trying to connect to the Docker daemon socket。

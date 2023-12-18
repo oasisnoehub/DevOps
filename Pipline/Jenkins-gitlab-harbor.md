@@ -1,7 +1,7 @@
 # CI/CD 持续集成与交付分发
 ## Jenkins + gitlab + harbor 自动集成构建发布docker镜像并部署应用服务
 
-![Alt text](image-3.png)
+![Alt text](images/image-3.png)
 
 ### 1. Gitlab 搭建
 #### 部署
@@ -73,7 +73,7 @@ exit
 
 按之前配置的host的地址与端口，访问 http://172.22.70.12:9980
 
-![Alt text](image-4.png)
+![Alt text](images/image-4.png)
 
 （5）密码配置
 `首次访问，直接出现登录界面不知道root的密码，可进行如下操作更改root密码`
@@ -126,7 +126,7 @@ vi harbor.yml
 ```
 主要修改主机地址，端口以及将https配置注释掉
 
-![Alt text](image-17.png)
+![Alt text](images/image-17.png)
 
 启动harbor
 ```shell
@@ -221,7 +221,7 @@ ssh
 CloudBees Docker Build and Publish
 ```
 Jenkins 界面
-![Alt text](image-2.png)
+![Alt text](images/image-2.png)
 
 #### 版本升级
 
@@ -263,16 +263,16 @@ https://www.cnblogs.com/lenmom/p/9494877.html
 
 `由于jenkins以docker的形式进行部署，maven的settings文件地址为容器内部的地址，因此jenkins里面maven配置的地址为/usr/local/maven。而启动时，绑定的maven settings文件地址为宿主机的-v /usr/local/apache-maven-3.5.4:/usr/local/maven`
 
-![Alt text](image-7.png)
-![Alt text](image-8.png)
+![Alt text](images/image-7.png)
+![Alt text](images/image-8.png)
 
 `注意宿主机里maven的地址为/usr/local/apache-maven-3.5.4，然后将localmaven放在与apache-maven-3.5.4同一个目录下`
 
-![Alt text](image-9.png)
+![Alt text](images/image-9.png)
 
 `注意：修改Maven settings文件里面的local Maven的地址：/usr/local/{local maven 的文件名}`
 
-![Alt text](image-10.png)
+![Alt text](images/image-10.png)
 
 
 
@@ -285,7 +285,7 @@ https://www.cnblogs.com/lenmom/p/9494877.html
 
 
 
-![Alt text](image-18.png)
+![Alt text](images/image-18.png)
 
 ### (2) Dockerfile
 在项目根目录下添加用于制作Docker镜像的`Dockerfile`
@@ -483,9 +483,9 @@ pipeline {
 Cridentials：登录目标主机的ssh/账号密码
 凭据管理 -> 设置需要远程登录访问的主机地址和登录账号密码（或者ssh密匙）
 
-![Alt text](image-20.png)
+![Alt text](images/image-20.png)
 
-![Alt text](image-21.png)
+![Alt text](images/image-21.png)
 
 
 ### (5) 创建Piple流水线项目
@@ -494,13 +494,13 @@ Cridentials：登录目标主机的ssh/账号密码
 
 流水线选择Pipeline script from SCM，填入gitlab中需要构建的仓库地址（注意填入的仓库项目地址是否正确），选择对应的gitlab登录Credentials，通过Git，Dockerfile 和 Jenkinsfile构建
 
-![Alt text](image-19.png)
+![Alt text](images/image-19.png)
 
 选择代码仓库项目里需要构建的分支，并指定Jenkinsfile文件的路径
 `注意路径一定要对应否则pipline无法生效`
 
-![Alt text](image-22.png)
+![Alt text](images/image-22.png)
 
 ### (6) 构建分发项目服务
-![Alt text](image-23.png)
+![Alt text](images/image-23.png)
 

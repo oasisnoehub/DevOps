@@ -689,7 +689,5 @@ docker volume rm my-vol
 
 ```
 
-
-
 ## Tmpfs 文件系统
 https://www.kernel.org/doc/html/latest/filesystems/tmpfs.html

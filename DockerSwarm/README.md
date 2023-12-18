@@ -2,8 +2,8 @@
 # Docker Swarm Architect
 https://juejin.cn/post/6946421472499859487
 
-![Alt text](image.png)
-
+![Alt text](assets/image.png)
+![Alt text](assets/image-1.png)
 ---
 
 # Docker Swarm Command

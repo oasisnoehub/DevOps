@@ -24,6 +24,7 @@ docker stack deploy -c portainer-agent-stack.yml portainer
 
 
 登入Portainer管理UI，添加Agent作为Swarm集群的统一EndPoint：
+
 ![Alt text](images/image.png)
 
 

@@ -97,7 +97,7 @@ exit
 exit
 ```
 
-![Alt text](images/image.png)
+![Alt text](assets/gitlab/image.png)
 
 
 # 创建gitlab集群

@@ -3,9 +3,9 @@
 进入 Virtual box 官网下载
 https://www.virtualbox.org/wiki/Linux_Downloads
 滑到最下面
-![Alt text](image.png)
+![Alt text](images/image.png)
 点击拷贝
-![Alt text](image-1.png)
+![Alt text](images/image-1.png)
 进入cd /etc/yum.repos.d/
 ```shell
 cd /etc/yum.repos.d/
