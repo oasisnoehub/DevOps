@@ -82,7 +82,22 @@ docker service create \
 `--tmpfs`: 无配置选项, 只能用于standalone的containers.
 `--mount type=tmpfs,destination=/app`
 
+## 存储驱动
+参考文档：https://docs.docker.com/storage/storagedriver/
+顶层为容器读写层
 
+![Alt text](assets/DockerStorage/image-2.png)
+
+`one image + different containers`
+
+![Alt text](assets/DockerStorage/image-3.png)
+
+查看docker size：
+```shell
+docker ps -s
+```
+`size`: 容器读写层的大小
+`virtual size`: 镜像层（只读）+容器读写层
 
 ## 数据共享
 

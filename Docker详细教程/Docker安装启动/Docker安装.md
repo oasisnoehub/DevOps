@@ -33,3 +33,20 @@ systemctl start docker
 # 开机自启
 systemctl enable docker
 ```
+
+
+# 离线安装 Docker（Centos 7 ）
+
+**下载docker 安装包**
+地址：https://download.docker.com/linux/static/stable/x86_64/
+
+本次安装最新版docker
+![Alt text](assets/Docker%E5%AE%89%E8%A3%85/image.png)
+
+下载完成后上传到centos系统中
+
+
+查看docker的systemd配置
+```shell
+cat /usr/lib/systemd/system/docker.service
+```

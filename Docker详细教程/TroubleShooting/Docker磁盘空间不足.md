@@ -73,8 +73,8 @@ ln -s /mydata/docker/lib /var/lib
 编辑 /etc/docker/daemon.json 
 ```json
 {
-  "insecure-registries": ["http://172.22.70.12:8888"],
-  "data-root": "/docker/lib/docker"
+  "insecure-registries": ["172.20.220.12:8888","172.20.220.15:8888","172.20.220.18:8888"],
+  "data-root": "/mydata/docker/lib"
 }
 
 ```

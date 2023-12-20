@@ -42,19 +42,24 @@ vi harbor.yml
 
 启动 harbor
 ```shell
-./install.sh
+sh ./install.sh
 ```
 开启镜像扫描器(trivy)的启动方式：
 ```shell
 # 开启trivy （默认安全扫描扫描器）
-./install.sh --with-trivy
+sh ./install.sh --with-trivy
 # 开启trivy 和 chartmuseum
-./install.sh --with-trivy --with-chartmuseum
+sh ./install.sh --with-trivy --with-chartmuseum
 # 可选择其他镜像安全扫描器，默认为trivy
 # Note: Please set hostname and other necessary attributes in harbor.yml first. DO NOT use localhost or 127.0.0.1 for hostname, because Harbor needs to be accessed by external clients.
 # Please set --with-notary if needs enable Notary in Harbor, and set ui_url_protocol/ssl_cert/ssl_cert_key in harbor.yml bacause notary must run under https.
 # Please set --with-trivy if needs enable Trivy in Harbor
 # Please set --with-chartmuseum if needs enable Chartmuseum in Harbor
+```
+停止harbor
+```shell
+cd ~/harbor
+docker compose stop
 ```
 
 启动完成
