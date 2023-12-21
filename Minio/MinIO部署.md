@@ -44,7 +44,7 @@ https://www.jianshu.com/p/79e1cb948253
 
 创建minio集群网络
 ```shell
-docker network create --scope=swarm --attachable -d overlay minio-net
+docker network create --scope=swarm --attachable -d overlay minio-network
 ```
 minio集群docker-compose.yml部署编排文件
 ```shell
