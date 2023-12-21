@@ -52,9 +52,30 @@ docker network rm docker_gwbridge
 ```
 新建docker_gwbridge网络：设置地址为`192.168.16.0/24`
 ```shell
-docker network create --subnet 192.168.16.0/24 \
+docker network create --subnet 192.168.14.1/24 \
 --opt com.docker.network.bridge.name=docker_gwbridge \
 --opt com.docker.network.bridge.enable_icc=false \
 --opt com.docker.network.bridge.enable_ip_masquerade=true \
 docker_gwbridge
 ```
+
+
+# 修改完之后，发现ip地址不冲突，但是启动服务无法访问
+`docker网络与宿主机网络不在同一子网段，所以无法通过宿主机转发访问docker启动的服务`
+
+修改的 `docker_gwbridge` 地址为：`192.168.14.1/24` 
+(`inet 192.168.14.1  netmask 255.255.255.0  broadcast 192.168.14.255`)
+而宿主机的网卡 地址为 `172.20.220.12` 
+（`inet 172.20.220.12  netmask 255.255.255.0  broadcast 172.20.220.255`）
+
+解决办法：修改 `docker_gwbridge` 地址，使其与宿主机网卡地址位于同一子网，但尽可能远离宿主机网络避免网络ip地址冲突, 按上述方法将`docker_gwbridge` 地址修改为`172.23.0.1/24` 
+`inet 172.23.0.1  netmask 255.255.255.0  broadcast 172.23.0.255`
+
+```shell
+docker network create --subnet 172.24.0.1/24 \
+--opt com.docker.network.bridge.name=docker_gwbridge \
+--opt com.docker.network.bridge.enable_icc=false \
+--opt com.docker.network.bridge.enable_ip_masquerade=true \
+docker_gwbridge
+```
+
