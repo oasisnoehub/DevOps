@@ -23,6 +23,7 @@ services:
     configs:
       - source: gitlab
         target: /omnibus_config.rb
+    privileged: true
     secrets:
       - gitlab_root_password
   gitlab-runner:

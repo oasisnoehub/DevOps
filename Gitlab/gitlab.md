@@ -109,7 +109,11 @@ sh gitlab-volume-creator.sh
 ```shell
 docker network create --scope=swarm --attachable -d overlay gitlab-network
 ```
-将`gitlab.rb`，`root_password.txt` 以及 `git-stack.yml` 放在同一路径下，使用portainer stack （docker compose yml文件进行编排）部署
+
+
+> 注意：将`gitlab.rb`，`root_password.txt` 以及 `gitlab-stack.yml` 放在同一路径下,并修改 `gitlab.rb` 文件的external_url外部访问地址，否则外部无法访问启动的gitlab服务。`root_password.txt` ：设置root账户密码，`gitlab-stack.yml`：gitlab集群编排文件
+
+使用portainer stack （docker compose yml文件进行编排）部署
 ```shell
 docker stack deploy -c gitlab-stack.yml gitlab
 ```
