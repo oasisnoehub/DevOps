@@ -13,7 +13,7 @@ docker network create --scope=swarm --attachable -d overlay gitlab-network
 - gitlab配置文件：`gitlab.rb`
 - root账户登录密码：`root_password.txt`
 - gitlab集群编排文件： `gitlab-stack.yml`
-> 注意：将`gitlab.rb`，`root_password.txt` 以及 `gitlab-stack.yml` 放在同一路径下,并修改 `gitlab.rb` 文件的external_url外部访问地址，否则外部无法访问启动的gitlab服务。`root_password.txt` ：设置root账户密码，`gitlab-stack.yml`：gitlab集群编排文件
+> 注意：将`gitlab.rb`，`root_password.txt` 以及 `gitlab-stack.yml` 放在同一路径下,并修改 `gitlab.rb` 文件的external_url外部访问地址（宿主机地址），否则外部无法访问启动的gitlab服务。`root_password.txt` ：设置root账户密码，`gitlab-stack.yml`：gitlab集群编排文件
 
 使用 docker stack 进行部署（在上述文件路径下执行stack部署命令）
 ```shell
