@@ -1,5 +1,6 @@
 #!/bin/bash
 
-mkdir /mydata/jenkins/home
-mkdir /mydata/jenkins/certs
-mkdir /mydata/jenkins/maven
+mkdir -p /mydata/jenkins/share
+mkdir -p /mydata/jenkins/home
+mkdir -p /mydata/jenkins/certs
+mkdir -p /mydata/jenkins/maven

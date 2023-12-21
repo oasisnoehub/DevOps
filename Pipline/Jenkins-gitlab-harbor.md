@@ -199,7 +199,12 @@ $ docker login <ip>:<port>
 # 拉取jenkins镜像
 docker pull jenkinsci/blueocean
 # 运行jenkins实例
-docker  run   -d -u root   -p 8080:8080   -v /usr/local/jenkins:/var/jenkins_home   -v /var/run/docker.sock:/var/run/docker.sock  -v "$HOME":/home -v /usr/local/apache-maven-3.5.4:/usr/local/maven  --name myjenkins jenkinsci/blueocean:latest
+docker  run  -d -u root  -p 8080:8080 \
+- /var/run/docker.sock:/var/run/docker.sock \
+- /mydata/jenkins/home:/var/jenkins_home \
+- /mydata/jenkins/maven/apache-maven-3.5.4:/usr/local/maven \
+- /mydata/jenkins/certs:/certs/client \
+--name myjenkins jenkinsci/blueocean:latest
 # 查看运行jenkins容器日志
 docker logs myjenkins
 ```

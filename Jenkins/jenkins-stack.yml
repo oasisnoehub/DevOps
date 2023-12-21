@@ -7,16 +7,14 @@ networks:
     external: true
 
 services:
-  minio:
-    image: jenkinsci/blueocean:latest
+  jenkins:
+    image: jenkinsci/blueocean
     environment:
-      - DOCKER_TLS_CERTDIR: /certs
-    restart: always
-    privileged: true
+      DOCKER_TLS_CERTDIR: /certs
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock
       - /mydata/jenkins/home:/var/jenkins_home
-      - /mydata/jenkins/maven:/usr/local/maven
+      - /mydata/jenkins/maven/apache-maven-3.5.4:/usr/local/maven
       - /mydata/jenkins/certs:/certs/client
     networks:
       - network1
