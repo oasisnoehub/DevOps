@@ -79,3 +79,32 @@ docker network create --subnet 172.24.0.1/24 \
 docker_gwbridge
 ```
 
+# 建立三个docker节点集群的网桥地址分配(避免ip地址冲突且在同一子网段，使docker服务能被访问到)
+docker swarm节点本机网卡地址
+- dockerswarm01：`172.20.220.12`
+    `inet 172.20.220.12  netmask 255.255.255.0  broadcast 172.20.220.255`
+- dockerswarm02：`172.20.220.15`
+    `inet 172.20.220.15  netmask 255.255.255.0  broadcast 172.20.220.255`
+dockerswarm03：`172.20.220.18`
+    `inet 172.20.220.18  netmask 255.255.255.0  broadcast 172.20.220.255`
+
+查看网络配置：
+```shell
+ifconfig
+```
+
+`docker0`网络配置：
+- dockerswarm01： : `172.12.0.1/24` 
+    (`inet 172.12.0.1  netmask 255.255.255.0  broadcast 172.12.0.255`)
+- dockerswarm02： : `172.14.0.1/24` 
+    (`inet 172.14.0.1  netmask 255.255.255.0  broadcast 172.14.0.255`)
+- dockerswarm03： : `172.16.0.1/24` 
+    (`inet 172.16.0.1  netmask 255.255.255.0  broadcast 172.16.0.255`)
+
+`docker_gwbridge`网络配置：
+- dockerswarm01： : `172.23.0.1/24` 
+    (`inet 172.23.0.1  netmask 255.255.255.0  broadcast 172.23.0.255`)
+- dockerswarm02： : `172.24.0.1/24` 
+    (`inet 172.24.0.1  netmask 255.255.255.0  broadcast 172.24.0.255`)
+- dockerswarm03： : `172.25.0.1/24` 
+    (`inet 172.25.0.1  netmask 255.255.255.0  broadcast 172.25.0.255`)
