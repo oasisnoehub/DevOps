@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-05-18T11:16:57.401Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="fJMHdIpzu4s_5lUSNana" version="24.2.7" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-18T11:19:15.501Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="eS7oBD9LU-MUEI-3V_rn" version="24.2.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="819" dy="449" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#000000" math="0" shadow="0">
+    <mxGraphModel dx="1339" dy="629" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#000000" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -12,12 +12,6 @@
         </mxCell>
         <mxCell id="_ukXYbJVCE4wGKFz86gu-96" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;glass=0;strokeWidth=2;shadow=0;fillColor=none;fontColor=#FCFCFC;labelBackgroundColor=none;container=0;strokeColor=#FCFCFC;arcSize=12;" vertex="1" parent="_ukXYbJVCE4wGKFz86gu-130">
           <mxGeometry x="19.65" y="332.36" width="729.64" height="87.64" as="geometry" />
-        </mxCell>
-        <mxCell id="_ukXYbJVCE4wGKFz86gu-116" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=#000000;fontSize=13;arcSize=12;" edge="1" parent="_ukXYbJVCE4wGKFz86gu-130">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="412.7586206896552" y="57.30337078651686" as="sourcePoint" />
-            <mxPoint x="491.3793103448276" y="143.25842696629212" as="targetPoint" />
-          </mxGeometry>
         </mxCell>
         <mxCell id="_ukXYbJVCE4wGKFz86gu-1" value="&lt;font face=&quot;Times New Roman&quot; style=&quot;font-size: 13px;&quot;&gt;节点 1&lt;/font&gt;&lt;div style=&quot;font-size: 13px;&quot;&gt;&lt;font face=&quot;Times New Roman&quot; style=&quot;font-size: 13px;&quot;&gt;docker&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px;&quot;&gt;&lt;font face=&quot;Times New Roman&quot; style=&quot;font-size: 13px;&quot;&gt;docker compose&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;glass=0;strokeWidth=2;shadow=0;fontColor=#FCFCFC;labelBackgroundColor=none;container=0;fillColor=none;strokeColor=#FCFCFC;arcSize=12;" vertex="1" parent="_ukXYbJVCE4wGKFz86gu-130">
           <mxGeometry x="22.93" y="429.78" width="144.14" height="50.22" as="geometry" />
