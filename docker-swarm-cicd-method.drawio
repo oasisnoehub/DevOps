@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-05-18T11:07:18.924Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="OZr7wsKSoXnFGd1cFZkd" version="24.2.7" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-18T11:07:37.523Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="ak3aWonb20Sppmkc_SLw" version="24.2.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="2131" dy="1884" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#000000" math="0" shadow="0">
       <root>
@@ -103,7 +103,7 @@
         <mxCell id="_ukXYbJVCE4wGKFz86gu-98" value="&lt;font face=&quot;Times New Roman&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;工具服务&lt;/span&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontColor=#FCFCFC;labelBackgroundColor=none;container=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="-510" y="430" width="125" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="_ukXYbJVCE4wGKFz86gu-0" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Jenkins&amp;nbsp;&lt;/font&gt;&lt;div&gt;&lt;font size=&quot;3&quot;&gt;持续集成/持续部署工具&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=2;shadow=0;fontColor=#FCFCFC;labelBackgroundColor=none;fillColor=none;strokeColor=#FCFCFC;container=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+        <mxCell id="_ukXYbJVCE4wGKFz86gu-0" value="&lt;font face=&quot;Times New Roman&quot; style=&quot;font-size: 18px;&quot;&gt;Jenkins&amp;nbsp;&lt;/font&gt;&lt;div&gt;&lt;font face=&quot;RUwg2uM1JFRjtRuIZe-r&quot; size=&quot;3&quot;&gt;持续集成/持续部署工具&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=2;shadow=0;fontColor=#FCFCFC;labelBackgroundColor=none;fillColor=none;strokeColor=#FCFCFC;container=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="-520" y="-120" width="530" height="100" as="geometry" />
         </mxCell>
         <mxCell id="_ukXYbJVCE4wGKFz86gu-12" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Harbor&lt;/font&gt;&lt;div&gt;&lt;font size=&quot;3&quot; style=&quot;&quot;&gt;私有镜像仓库&amp;nbsp;&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=2;shadow=0;fontColor=#FCFCFC;labelBackgroundColor=none;fillColor=none;strokeColor=#FCFCFC;container=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
