@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-06-12T14:02:55.629Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="qnOo784q3-5SQoj5pTfa" version="24.5.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-06-12T14:03:27.371Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="Vwu9uYIdQ-G3TnPguvDj" version="24.5.2" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1949" dy="713" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2190" dy="866" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -8,13 +8,13 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="Start" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-95" y="20" width="120" height="40" as="geometry" />
+          <mxGeometry x="92.5" y="10" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="6hYuWl8q_fK9GimvcNTk-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="6hYuWl8q_fK9GimvcNTk-0" target="6hYuWl8q_fK9GimvcNTk-3">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="6hYuWl8q_fK9GimvcNTk-0" value="describe your docker image requires&lt;div&gt;(* what basic image you need and what tools you want include)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-150" y="120" width="230" height="60" as="geometry" />
+          <mxGeometry x="37.5" y="110" width="230" height="60" as="geometry" />
         </mxCell>
         <mxCell id="6hYuWl8q_fK9GimvcNTk-1" value="Plug in lamp" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="400" y="680" width="120" height="40" as="geometry" />
@@ -30,7 +30,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="6hYuWl8q_fK9GimvcNTk-3" value="LLMs" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-520" y="250" width="150" height="60" as="geometry" />
+          <mxGeometry x="-520" y="250" width="150" height="140" as="geometry" />
         </mxCell>
         <mxCell id="6hYuWl8q_fK9GimvcNTk-4" value="RAG" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="-690" y="160" width="150" height="60" as="geometry" />
@@ -97,7 +97,7 @@
           <mxGeometry x="-250" y="640" width="230" height="60" as="geometry" />
         </mxCell>
         <mxCell id="6hYuWl8q_fK9GimvcNTk-29" value="running files&lt;br&gt;(*docker run command &amp;amp;&amp;nbsp;&lt;div&gt;docker-compose file)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-230" y="780" width="230" height="60" as="geometry" />
+          <mxGeometry x="-250" y="780" width="230" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
