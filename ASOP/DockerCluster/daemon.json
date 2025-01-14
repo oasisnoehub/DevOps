@@ -1,0 +1,13 @@
+{
+    "bip":"172.12.0.1/24",
+    "default-address-pools": [
+        {
+           "base": "172.16.0.0/24",
+           "size": 24
+        }
+    ],
+    "insecure-registries": ["http://172.20.220.20:8888"],
+    "data-root":"/appdata/docker/lib/docker",
+    "metrics-addr": "172.20.220.12:9323",
+    "registry-mirrors": ["http://mirrors.ustc.edu.cn","http://mirrors.aliyun.com/","https://registry.docker-cn.com"]
+}
