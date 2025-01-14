@@ -1,38 +1,51 @@
-# Docker集群部署说明手册
+# Docker集群环境部署说明手册
 
 | 版本号 | 编辑日期   | 修改人  | 内容描述               | 审核人  |
 |--------|------------|---------|---------------------------|---------|
 | 1.0.0    | 2025-01-14 | 尹艺玲    | 初始版本（乌鲁木齐T4/丽水机场）      | 尹艺玲    |
 
-## 步骤
-### STEP 0: 准备工作
-设置主机名称
+## 目录
+
+1. **环境准备**
+
+2. **Docker 安装**
+
+3. **数据根地址迁移**
+
+4. **网络配置**
+
+5. **创建集群**
+
+6. **安全实践配置**
+
+
+### 1. 环境准备
+在部署集群之前，请完成以下准备工作：
+（1） 设置主机名称：
 ```shell
 hostnamectl set-hostname <newhostname>
-# 删除麒麟自带的podman
+```
+（2）删除可能冲突的软件（删除麒麟自带的podman）
+```bash
 # 参考文档： https://blog.csdn.net/qq_45547688/article/details/138150469#:~:text=docker:%20Er
-# yum remove podman
+yum remove podman -y
 ```
-### STEP 1：安装Docker 
-#### 离线安装
-说明：生产环境中(集群节点)
-（1）将 `Packages` 文件里面的 `docker-25.0.3.tgz`，`docker.service` 和 `docker-compose-linux-x86_64` 文件放到与 `docker_install_offline.sh` 同层目录下
-```shell
-mkdir -p /appdata
-mkdir -p /appdata/software
-```
-（2）执行`sh docker_install_offline.sh`命令安装 docker 和 docker compose
 
-```shell
-sh docker_install_offline.sh
-```
-docker_install_offline.sh
+### 2. Docker安装（离线）
+
+（1）准备安装文件：
+
+- `docker-25.0.3.tgz`
+- `docker.service`
+- `docker-compose-linux-x86_64`
+
+（2）执行以下脚本完成安装：
 ```shell
 #!/bin/bash
-# ============================================================================
+# ======================================================
 # Info: 离线安装Docker
 # Prepare: 文件 | docker-25.0.3.tgz | docker.service
-# =============================================================================
+# ======================================================
 tar -zxvf ./docker-25.0.3.tgz
 cp docker/* /usr/bin/
 cp docker.service /etc/systemd/system/
@@ -42,34 +55,34 @@ systemctl enable docker
 systemctl start docker
 systemctl status docker
 docker -v
+# 验证安装
 docker info
-# ============================================================================
+# ======================================================
 # Info: 离线安装docker compose-
 # Prepare: 文件 | docker-compose-linux-x86_64
-# =============================================================================
+# ======================================================
 mv docker-compose-linux-x86_64 docker-compose
-
 mv docker-compose /usr/local/bin/
-
 chmod +x /usr/local/bin/docker-compose
-
-docker-compose -v # 检查docker-compose版本号
+# 验证安装
+docker-compose -v
 # docker compose --version
-# =============================================================================
+# ======================================================
 ```
 
-### STEP 2 迁移数据根地址
-执行下面命令，将docker数据根地址迁移到`/appdata/docker/lib`
-```shell
-mkdir -p /appdata
-mkdir -p /appdata/docker
+### 3. 数据根地址迁移
+（1）创建目标目录：
+```bash
 mkdir -p /appdata/docker/lib
+```
+（2）使用 rsync 迁移数据：
+```shell
 # 将 /var/lib/docker的所有内容 复制到 /appdata/docker/lib
 rsync -avzP /var/lib/docker /appdata/docker/lib
 rm -rf /var/lib/docker
 ```
-编辑`/etc/docker/daemon.json`文件，如果没有`daemon.json`就直接创建`/etc/docker/daemon.json`
-docker集群daemon.json文件配置
+（3）配置`daemon.json`文件
+编辑`/etc/docker/daemon.json`文件，如果没有`daemon.json`就直接创建`/etc/docker/daemon.json`：
 ```shell
 mkdir -p /etc/docker
 touch /etc/docker/daemon.json
@@ -80,7 +93,8 @@ touch /etc/docker/daemon.json
     "data-root":"/appdata/docker/lib/docker"
 }
 ```
-然后执行下面重载、重启文件，并检查是否修改成功。如果没有修改成功，重新执行上述操作进行修改。
+（4）重载并重启 Docker：
+执行下面重载、重启文件，并检查是否修改成功。如果没有修改成功，重新执行上述操作进行修改。
 ```shell
 # 重载daemon文件
 systemctl daemon-reload
@@ -89,10 +103,9 @@ systemctl restart docker
 # 检查data-root是否修改成功
 docker info
 ```
-### STEP 3 网络配置
-#### docker0 网络
-（1）daemon.json文件
-修改`/etc/docker/daemon.json`文件内容如下（根据实际部署环境ip地址指定配置"bip":"172.12.0.1/24"）;
+### 4. 网络配置
+（1）修改 daemon.json 配置文件：
+修改`/etc/docker/daemon.json`文件内容如下（根据实际部署环境ip地址指定配置"bip":"172.12.0.1/24"）
 （2）可考虑添加容器创建默认地址池
 通过"default-address-pools"参数进行配置，请注意网络地址不要重叠：
 ```shell
@@ -103,7 +116,7 @@ docker info
                 }
         ],
 ```
-`daemon.json`文件配置示例:
+- `daemon.json`文件配置示例:
 ```json
 # 使用时请注意不要添加注释使用
 {
@@ -137,15 +150,42 @@ bip 用于默认桥接网络，而 default-address-pools 用于创建新的 over
 
 ---
 
-（3）重新装载daemon文件配置并重启docker
+（3）`docker_gwbridge`网络配置
+
+- `ifconfig`查看如果没有`docker_gwbridge`网络直接创建(按需指定地址)
+```shell
+docker network create --subnet 172.14.0.0/24 \
+--opt com.docker.network.bridge.name=docker_gwbridge \
+--opt com.docker.network.bridge.enable_icc=false \
+--opt com.docker.network.bridge.enable_ip_masquerade=true \
+docker_gwbridge
+```
+
+- 修改`docker_gwbridge`地址（在此之前停止所有在运行的docker容器、服务和堆栈）：删除`docker_gwbridge`网络，如果报错信息说有节点在使用,用下面命令查看谁在使用`docker_gwbridge`，断开与`gateway_ingress-sbox`的连接，然后再删除网络
+```shell
+docker network ls
+docker network inspect docker_gwbridge
+docker network disconnect -f docker_gwbridge gateway_ingress-sbox
+docker network rm docker_gwbridge
+```
+- 新建docker_gwbridge网络：本示例设置地址为`192.168.16.0/24`(注意：根据生产部署实际情况进行地址配置)
+```shell
+docker network create --subnet 192.168.16.0/24 \
+--opt com.docker.network.bridge.name=docker_gwbridge \
+--opt com.docker.network.bridge.enable_icc=false \
+--opt com.docker.network.bridge.enable_ip_masquerade=true \
+docker_gwbridge
+```
+
+（4）重载与重启docker
 ```shell
 systemctl daemon-reload
 systemctl restart docker
 ```
-（4）检查配置是否生效
+（5）检查配置
 执行ipconfig命令，检查 `docker0` 和 `docker_gwbridge` 网络 是否与之前daemon.json配置的一致。如果不一致，则重新执行上述操作进行配置。
 
-检查配置示例：
+- 网络检查配置示例：
 ```shell
 docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         inet 172.12.0.1  netmask 255.255.255.0  broadcast 172.12.0.255
@@ -166,57 +206,15 @@ docker_gwbridge: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 
----
-#### docker_gwbridge 网络
-（1）创建`docker_gwbridge`网络
-`ifconfig`查看如果没有`docker_gwbridge`网络直接创建(按需指定地址)
-```shell
-docker network create --subnet 172.14.0.0/24 \
---opt com.docker.network.bridge.name=docker_gwbridge \
---opt com.docker.network.bridge.enable_icc=false \
---opt com.docker.network.bridge.enable_ip_masquerade=true \
-docker_gwbridge
-```
-
-修改`docker_gwbridge`地址（在此之前停止所有在运行的docker容器、服务和堆栈）
-```shell
-# 查看网络
-docker network ls
-```
-删除`docker_gwbridge`网络
-```shell
-docker network inspect docker_gwbridge
-```
-如果报错信息说有节点在使用,用下面命令查看谁在使用`docker_gwbridge`
-```shell
-docker network inspect docker_gwbridge
-```
-断开与`gateway_ingress-sbox`的连接
-```shell
-docker network disconnect -f docker_gwbridge gateway_ingress-sbox
-```
-删除网络：
-```shell
-docker network rm docker_gwbridge
-```
-新建docker_gwbridge网络：设置地址为`192.168.16.0/24`(注意：根据生产部署实际情况进行地址配置)
-```shell
-docker network create --subnet 192.168.16.0/24 \
---opt com.docker.network.bridge.name=docker_gwbridge \
---opt com.docker.network.bridge.enable_icc=false \
---opt com.docker.network.bridge.enable_ip_masquerade=true \
-docker_gwbridge
-```
-### STEP 4 创建集群
-（1）初始化集群
-在任一个docker节点执行
+### 5. 创建集群
+（1）初始化 Swarm 集群：
 ```shell
 # 初始化集群
 docker swarm init
 # 多网卡情况下使用--advertise-addr参数进行指定初始化(注意：根据生产部署实际情况进行地址配置)
 docker swarm init --advertise-addr 10.50.22.11
 ```
-（2）节点加入集群
+（2）节点加入集群：
 根据返回结果，复制结果中`docker swarm join --token xxxxxx`的命令，然后在剩余需要加入swarm集群的节点执行复制的命令
 ```shell
 Swarm initialized: current node (bvz81updecsj6wjz393c09vti) is now a manager.
@@ -227,15 +225,15 @@ To add a worker to this swarm, run the following command:
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
-查看swarm token
+（3）查看swarm token
 ```shell
 docker swarm join-token worker
 ```
-查看加入的docker swarm的节点
+（4）查看加入的docker swarm的节点
 ```shell
 docker node ls
 ```
-（3）节点角色配置
+（5）节点角色配置
 将节点提升为manager(只能在当前为manager的节点上运行)
 ```shell
 docker node promote <节点名>
@@ -244,22 +242,14 @@ docker node promote <节点名>
 ```shell
 docker swarm leave -f
 ```
-### STEP 5 集群节点添加标签
-（1）检查节点
-查看集群节点
-```shell
-docker node ls
-```
-（2）节点标签
-为加入的节点添加指定标签
+（6）集群节点添加标签
 ```shell
 # docker node update --label-add role=node01 <docker hostname>
 docker node update --label-add role=node01 agent1
 docker node update --label-add role=node02 agent2
 docker node update --label-add role=node03 agent3
 ```
-（3）检查标签配置
-检查是否添加上标签
+（7）检查标签配置
 ```shell
 # docker node inspect <docker hostname>
 # 检查节点信息
@@ -267,7 +257,7 @@ docker node inspect agent1
 # 看label参数是否与配置的设置一致
 ```
 
-### STEP 7 安全实践配置（检查）
+### 6. 安全实践配置（检查）
 （1）Docker集群节点之间防火墙策略配置
 确保防火墙规则允许集群节点间的通信，需要开放 Docker Swarm 所需的端口包括:
 - 用于集群管理通信 : `2377/tcp`
